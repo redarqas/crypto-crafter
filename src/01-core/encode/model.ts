@@ -1,7 +1,7 @@
 
 
 export interface Encoded<T> {
-    raw_transaction: string;
+    rawTransaction: string;
     details: T
 }
 

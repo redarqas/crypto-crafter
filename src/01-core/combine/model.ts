@@ -5,12 +5,12 @@ export type Combined = {
 }
 
 export type Signature = {
-    pub_key: string;
+    pubKey: string;
     signature: string;
 }
 
 export interface CombineInput<T> {
-    raw_transaction: string;
+    rawTransaction: string;
     signatures: [Signature];
     details: T
 }

@@ -1,5 +1,5 @@
 import { BroadcastInput, Broadcasted } from "./model";
 
 export interface Boundary {
-    broadcast(input: BroadcastInput): Broadcasted
+    broadcast(input: BroadcastInput): Promise<Broadcasted>
 }
