@@ -1,11 +1,11 @@
 
 export type Combined = {
-    hash: string;
+    hash?: string;
     raw: string;
 }
 
 export type Signature = {
-    pubKey: string;
+    signerPubKey: string;
     signature: string;
 }
 

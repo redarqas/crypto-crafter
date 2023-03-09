@@ -1,10 +1,10 @@
 
 
 export type BroadcastInput = {
-    raw_transaction: string;
+    encodedTransaction: string;
 }
 
 export type Broadcasted = {
-    transaction_identifier: string;
+    transactionIdentifier: string;
 }
 

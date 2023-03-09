@@ -1,10 +1,10 @@
 
 export type SignInput = {
-    raw_transaction: string;
-    private_key: string;
+    rawTransaction: string;
+    privateKey: string;
 }
 
 export type Signed = {
-    signature: string;
-    raw_transaction: string;
+    signature?: string;
+    rawTransaction: string;
 }
