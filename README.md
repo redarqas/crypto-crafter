@@ -1,7 +1,7 @@
 Crypto crafter
 =====
 
-Helps for educational purpose: demonstrate an Hexagonal architecture style
+One way to aid in educational purposes is to showcase the Hexagonal architecture style.
 
 ### Overview
 
@@ -30,9 +30,9 @@ The core expresses the primitive use cases, through:
 ##### Chain core domain
 
 Expresses the craft use case for a specific blockchain.
-Craft use case is based on core primitive: encode + sign + combine + broadcast
+Craft use case is based on core primitives: encode + sign + combine + broadcast
 
-As an example solana core domain is implemented, through the same model: 
+As an example Solana core domain is implemented, through the same model: 
 
 - Model, refined for the specific chain 
 - Boundary, composed using core boudaries
@@ -41,12 +41,12 @@ As an example solana core domain is implemented, through the same model:
 ##### Chain gates implementation 
 
 Depends on the chain core domain, and implements the needed gates.
-As an example solana gate is implemented solana-web3 js lib.  
+As an example Solana gate is implemented using solana-web3 js lib.  
 
 ##### Chain boundaries implementation
 
-Depends on the chain core domain, and implements the needed boudaries
-As an example solana boundary is implemented and provided as an API controler.
+Depends on the chain core domain, and implements the needed boundaries
+As an example Solana boundary is implemented and provided as an API controller.
 
 ##### Main http
 
@@ -61,10 +61,13 @@ npm run dev
 ```
 - Run broadcast scenario
 
-`curls.http` provides the necessary calls to run the broadcast scenario on solana devnet, `encode`, `sign`, `combine` and then `broadcast`. 
+`curls.http` provides the necessary calls to run the broadcast scenario on Solana devnet, `encode`, `sign`, `combine` and then `broadcast`. 
 
 Once done, check you tx on solana explorer: 
 
 `https://explorer.solana.com/tx/{{id from broadcast scenario run}}`
 
 
+### HA dependency graph
+
+<img alt="Crypto crafter" src="dependency-graph.png"/>
