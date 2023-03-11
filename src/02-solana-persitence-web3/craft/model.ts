@@ -1,5 +1,6 @@
 import { CreateDelegateStake, Transfer } from "@org/core/solana";
 import * as web3 from "@solana/web3.js";
+import * as randomstring from "randomstring";
 
 export enum InstructType {
     Transfer = "transfer",
@@ -16,12 +17,13 @@ export type TransferInstruct = {
 export const TransferInstruct = {
     from: function (transferIntent: Transfer): TransferInstruct {
         let sender = new web3.PublicKey(transferIntent.sender)
+        let receiver = new web3.PublicKey(transferIntent.recipient)
         return {
             type: InstructType.Transfer,
             feePayer: sender,
             params: {
                 fromPubkey: sender,
-                toPubkey: new web3.PublicKey(transferIntent.receiver),
+                toPubkey: receiver,
                 lamports: transferIntent.amount
             }
         }
@@ -35,10 +37,10 @@ export type CreateDelegateStakeInstruct = {
     params: [web3.CreateAccountWithSeedParams, web3.InitializeStakeParams, web3.DelegateStakeParams]
 }
 export const CreateDelegateStakeInstruct = {
-    from: function (intent: CreateDelegateStake, stakeParams: { seed: string, stakePubkey: web3.PublicKey }): CreateDelegateStakeInstruct {
+    from: async function (intent: CreateDelegateStake): Promise<CreateDelegateStakeInstruct> {
         let fromPubkey = new web3.PublicKey(intent.fromAccount)
-        //let seed = randomstring.generate({ length: 32, charset: "alphanumeric", })
-        //let stakePubkey = sol.PublicKey.createWithSeed(fromPubkey, seed, sol.StakeProgram.programId)
+        let seed = randomstring.generate({ length: 32, charset: "alphanumeric", })
+        let stakePubkey = await web3.PublicKey.createWithSeed(fromPubkey, seed, web3.StakeProgram.programId)
         let votePubkey = new web3.PublicKey(intent.voteAccount)
         return {
             type: InstructType.CreateStake,
@@ -50,15 +52,15 @@ export const CreateDelegateStakeInstruct = {
                     space: web3.StakeProgram.space,
                     programId: web3.StakeProgram.programId,
                     fromPubkey: fromPubkey,
-                    newAccountPubkey: stakeParams.stakePubkey,
-                    seed: stakeParams.seed
+                    newAccountPubkey: stakePubkey,
+                    seed: seed
                 }, {
-                    stakePubkey: stakeParams.stakePubkey,
+                    stakePubkey: stakePubkey,
                     authorized: new web3.Authorized(fromPubkey, fromPubkey)
 
                 }, {
                     authorizedPubkey: fromPubkey,
-                    stakePubkey: stakeParams.stakePubkey,
+                    stakePubkey: stakePubkey,
                     votePubkey: votePubkey
                 }
 

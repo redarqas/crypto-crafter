@@ -9,11 +9,8 @@ import { InstrutionsEncoder } from "./intsrutions-encoder";
 
 class SolanaWeb3GateImplem implements sol.Gate<Instruct> {
 
-    private connection: web3.Connection;
-    private encoder: InstrutionsEncoder;
-
-    constructor(connection: web3.Connection) {
-        this.connection = connection
+    private readonly encoder: InstrutionsEncoder;
+    constructor(private readonly connection: web3.Connection) {
         this.encoder = new InstrutionsEncoder(connection)
     }
 
@@ -24,9 +21,8 @@ class SolanaWeb3GateImplem implements sol.Gate<Instruct> {
             case InstructType.CreateStake:
                 return this.encoder.encodeCreateStake(instruction)
             default:
-                throw new Error("Method not implemented.");
+                throw new Error("Instruction type not supported");
         }
-
     }
 
     sign(input: s.SignInput): Promise<s.Signed> {
@@ -60,9 +56,6 @@ class SolanaWeb3GateImplem implements sol.Gate<Instruct> {
     }
 }
 
-type SolanaWeb3GateCompanion = {
-    make(s: string): SolanaWeb3GateImplem
-}
 
 export const SolanaWeb3Gate = {
     make: function (

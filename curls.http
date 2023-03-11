@@ -1,0 +1,18 @@
+### This file requires the REST Client VS Code extension
+### https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+@endpoint = http://localhost:3000/solana/dev
+
+### Create
+POST {{endpoint}}/encode
+Content-Type: application/json
+
+{
+ "type": "transfer",
+ "sender": "BviqJL6EJBgLh9LZNHV45maXbvzXj95TeNrh7fKw6aL7",
+ "recipient": "BviqJL6EJBgLh9LZNHV45maXbvzXj95TeNrh7fKw6aL7",
+ "amount": 100,
+ "feePayer": "BviqJL6EJBgLh9LZNHV45maXbvzXj95TeNrh7fKw6aL7"
+}
+
+

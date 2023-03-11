@@ -1,37 +1,28 @@
-/**
- * Solana Intents
- */
-export interface Intent { }
-export type Transfer = Intent & {
+/** Solana Intents */
+export enum IntentType {
+    Transfer = "transfer",
+    CreateStake = "create_stake"
+}
+export type Intent = Transfer | CreateDelegateStake
+export type Transfer = {
+    type: IntentType.Transfer,
     sender: string;
-    receiver: string;
+    recipient: string;
     amount: number;
     feePayer: string;
 }
-/** companion object pattern **/
-export const Transfer = {
-    withSenderAsFeePayer: function (sender: string, receiver: string, amount: number): Transfer {
-        return {
-            sender: sender,
-            receiver: receiver,
-            amount: amount,
-            feePayer: sender
-        };
-    }
-}
 
 export type CreateDelegateStake = {
+    type: IntentType.CreateStake,
     fromAccount: string;
     voteAccount: string;
     amount: number
 }
 
-export type Stake = Intent & {}
+export type Stake = {}
 export type CombineInputDetails = {}
-/**
- * Outputs
- */
-export interface EncodeOutput { }
-export type TransferOutput = EncodeOutput & {}
-export type CreateDelegateStakeOutput = EncodeOutput & { stakePubkey: string }
-//export type EncodeOutput = {}
+
+/** outputs */
+export type EncodeOutput = TransferOutput | CreateDelegateStakeOutput
+export type TransferOutput = {}
+export type CreateDelegateStakeOutput = { stakePubkey: string }
