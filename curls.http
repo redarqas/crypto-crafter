@@ -2,17 +2,60 @@
 ### https://marketplace.visualstudio.com/items?itemName=humao.rest-client
 
 @endpoint = http://localhost:3000/solana/dev
+@alice_priv_key = c6295e52c1ceb894312af16912f0b8004c62b2b36f760c59136661eadbda1bff
+@alice_pub_key = BviqJL6EJBgLh9LZNHV45maXbvzXj95TeNrh7fKw6aL7
+@bob_pub_key = CgCKcXoAJtwMyXAhqGa5R2hH9JEbSt9R2ubQzi6GToU9
 
-### Create
+### Encode 
+# @name encode 
 POST {{endpoint}}/encode
 Content-Type: application/json
 
 {
  "type": "transfer",
- "sender": "BviqJL6EJBgLh9LZNHV45maXbvzXj95TeNrh7fKw6aL7",
- "recipient": "BviqJL6EJBgLh9LZNHV45maXbvzXj95TeNrh7fKw6aL7",
+ "sender": "{{alice_pub_key}}",
+ "recipient": "{{bob_pub_key}}",
  "amount": 100,
- "feePayer": "BviqJL6EJBgLh9LZNHV45maXbvzXj95TeNrh7fKw6aL7"
+ "feePayer": "{{alice_pub_key}}"
+}
+
+### Sign
+@encodedRawTx = {{encode.response.body.rawTransaction}}
+# @name sign
+POST {{endpoint}}/sign
+Content-Type: application/json
+
+{
+ "privateKey": "{{alice_priv_key}}",
+ "rawTransaction": "{{encodedRawTx}}"
 }
 
 
+### Combine
+
+# @name combine
+@signature = {{sign.response.body.signature}}
+@signedRawTx = {{sign.response.body.rawTransaction}}
+POST {{endpoint}}/combine
+Content-Type: application/json
+
+{
+ "rawTransaction": "{{signedRawTx}}",
+ "signatures": [
+   {
+	 "signature": "{{signature}}",
+	 "signerPubKey": "{{alice_pub_key}}"
+    }
+  ]
+}
+
+### Broadcast
+
+#@name broadcast
+@combinedRawTx = {{combine.response.body.raw}}
+POST {{endpoint}}/broadcast
+Content-Type: application/json
+
+{
+ "encodedTransaction": "{{combinedRawTx}}"
+}
